@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Ship;
 use Illuminate\Http\Request;
 
-class ShipController extends Controller
+class ShipController extends BaseController
 {
     // Display a listing of ships
     public function index()
     {
         $ships = Ship::all();
-        return response()->json($ships);
+        return $this->sendResponse($ships);
+
     }
 
     // Store a newly created ship
@@ -34,7 +35,9 @@ class ShipController extends Controller
         $ship->owner_id = auth()->id(); // Assuming the user is authenticated
         $ship->save();
 
-        return response()->json($ship, 201);
+        return $this->sendResponse($ship);
+
+        
     }
 
     // Display the specified ship
@@ -60,16 +63,17 @@ class ShipController extends Controller
             'length'          => 'sometimes|required|integer',
             'berths'          => 'sometimes|required|integer',
             'bathrooms'       => 'sometimes|required|integer',
-            'equipment'       => 'sometimes|required|array',
-            'crew'            => 'sometimes|required|array',
-            'route'           => 'sometimes|required|array',
+            'equipment'       => 'sometimes|required',
+            'crew'            => 'sometimes|required',
+            'route'           => 'sometimes|required',
             'price_per_week'  => 'sometimes|required|numeric',
             'skipper_required'=> 'sometimes|required|boolean',
         ]);
 
         $ship->update($validatedData);
 
-        return response()->json($ship);
+        return $this->sendResponse($ship);
+
     }
 
     // Remove the specified ship
@@ -84,6 +88,7 @@ class ShipController extends Controller
 
         $ship->delete();
 
-        return response()->json(['message' => 'Ship deleted successfully']);
+        return $this->sendResponse('' , 'Ship Deleted');
+
     }
 }

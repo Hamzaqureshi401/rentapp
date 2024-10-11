@@ -6,13 +6,14 @@ use App\Models\Reservation;
 use App\Models\Ship;
 use Illuminate\Http\Request;
 
-class ReservationController extends Controller
+class ReservationController extends BaseController
 {
     // List all reservations for the authenticated user
     public function index()
     {
         $reservations = Reservation::where('user_id', auth()->id())->get();
-        return response()->json($reservations);
+        return $this->sendResponse($reservations);
+
     }
 
     // Store a new reservation
@@ -30,14 +31,14 @@ class ReservationController extends Controller
 
         $reservation = Reservation::create($validatedData);
 
-        return response()->json($reservation, 201);
+        return $this->sendResponse($reservation);
     }
 
     // Show a specific reservation
     public function show($id)
     {
         $reservation = Reservation::where('user_id', auth()->id())->findOrFail($id);
-        return response()->json($reservation);
+        return $this->sendResponse($reservation);
     }
 
     // Update a reservation (e.g., cancel it)
@@ -51,7 +52,7 @@ class ReservationController extends Controller
 
         $reservation->update($validatedData);
 
-        return response()->json($reservation);
+        return $this->sendResponse($reservation);
     }
 
     // Delete a reservation
@@ -60,6 +61,6 @@ class ReservationController extends Controller
         $reservation = Reservation::where('user_id', auth()->id())->findOrFail($id);
         $reservation->delete();
 
-        return response()->json(['message' => 'Reservation deleted successfully']);
+        return $this->sendResponse('' , 'Reservation Deleted');
     }
 }

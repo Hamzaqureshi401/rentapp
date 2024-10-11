@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ReservationController;
-// use App\Http\Controllers\SkipperController;
+ use App\Http\Controllers\SkipperController;
 // use App\Http\Controllers\GeofenceController;
 
 
@@ -23,10 +23,8 @@ Route::middleware(['auth:api'])->group(function () {
     Route::apiResource('messages', MessageController::class);
 
     // Skipper routes (admin only)
-    Route::middleware('can:isAdmin')->group(function () {
         Route::apiResource('skippers', SkipperController::class);
-    });
-
+    
     // Geofence routes
     Route::apiResource('geofences', GeofenceController::class);
 });
