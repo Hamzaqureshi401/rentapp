@@ -10,7 +10,11 @@ class ShipController extends BaseController
     // Display a listing of ships
     public function index()
     {
-        $ships = Ship::all();
+        $ships = Ship::with(
+            'owner',
+            'reservations',
+            'geofences',
+            'skippers',)->get();
         return $this->sendResponse($ships);
 
     }
@@ -43,7 +47,11 @@ class ShipController extends BaseController
     // Display the specified ship
     public function show($id)
     {
-        $ship = Ship::findOrFail($id);
+        $ship = Ship::with(
+            'owner',
+            'reservations',
+            'geofences',
+            'skippers',)->findOrFail($id);
         return response()->json($ship);
     }
 
