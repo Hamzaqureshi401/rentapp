@@ -23,9 +23,9 @@ class ShipController extends Controller
             'length'          => 'required|integer',
             'berths'          => 'required|integer',
             'bathrooms'       => 'required|integer',
-            'equipment'       => 'required|array',
-            'crew'            => 'required|array',
-            'route'           => 'required|array',
+            'equipment'       => 'required',
+            'crew'            => 'required',
+            'route'           => 'required',
             'price_per_week'  => 'required|numeric',
             'skipper_required'=> 'required|boolean',
         ]);
