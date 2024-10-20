@@ -11,10 +11,17 @@ class ShipController extends BaseController
     public function index()
     {
         $ships = Ship::with(
+            'reviews.user',
             'owner',
             'reservations',
             'geofences',
             'skippers',)->get();
+
+        $ships->transform(function($ship) {
+            $ship->average_rating = $ship->average_rating; // Add the average rating to the response
+            return $ship;
+        });
+
         return $this->sendResponse($ships);
 
     }
@@ -98,5 +105,20 @@ class ShipController extends BaseController
 
         return $this->sendResponse('' , 'Ship Deleted');
 
+    }
+
+    public function getShips()
+    {
+        $ships = Ship::with('reviews.user')->get();
+
+        $ships->transform(function($ship) {
+            $ship->average_rating = $ship->average_rating; // Add the average rating to the response
+            return $ship;
+        });
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $ships
+        ]);
     }
 }

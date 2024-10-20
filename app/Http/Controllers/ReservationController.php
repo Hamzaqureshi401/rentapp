@@ -11,7 +11,7 @@ class ReservationController extends BaseController
     // List all reservations for the authenticated user
     public function index()
     {
-        $reservations = Reservation::where('user_id', auth()->id())->get();
+        $reservations = Reservation::with('user','ship')->where('user_id', auth()->id())->get();
         return $this->sendResponse($reservations);
 
     }
