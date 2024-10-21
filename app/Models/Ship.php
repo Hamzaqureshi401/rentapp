@@ -52,5 +52,15 @@ class Ship extends Model
     public function skippers()
     {
         return $this->belongsToMany(Skipper::class, 'ship_skipper');
+    } 
+    public function reviews()
+    {
+        return $this->hasMany(ShipReview::class);
+    }
+
+    // Calculate average rating
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating') ?? 0; // Default to 0 if no reviews
     }
 }

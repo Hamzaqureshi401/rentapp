@@ -33,12 +33,10 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('ships', [ShipController::class, 'store']);   // POST request to create a ship
         Route::post('skippers', [SkipperController::class, 'store']); // POST request to create a skipper
     });
-   
     Route::apiResource('ship-reviews', ShipReviewController::class);
-
-
     // Geofence routes
     Route::apiResource('geofences', GeofenceController::class);
+    
 });
 
 
