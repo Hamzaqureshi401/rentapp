@@ -27,28 +27,36 @@ class ShipController extends BaseController
 
     // Store a newly created ship
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'name'            => 'required|string|max:255',
-            'type'            => 'required|string',
-            'length'          => 'required|integer',
-            'berths'          => 'required|integer',
-            'bathrooms'       => 'required|integer',
-            'equipment'       => 'required',
-            'crew'            => 'required',
-            'route'           => 'required',
-            'price_per_week'  => 'required|numeric',
-            'skipper_required'=> 'required|boolean',
-        ]);
+{
+    // Validate the input
+    $validatedData = $request->validate([
+        'name'            => 'required|string|max:255',
+        'type'            => 'required|string',
+        'length'          => 'required|integer',
+        'berths'          => 'required|integer',
+        'bathrooms'       => 'required|integer',
+        'equipment'       => 'required',
+        'crew'            => 'required',
+        'route'           => 'required',
+        'price_per_week'  => 'required|numeric',
+        'skipper_required'=> 'required|boolean',
+        'skipper_ids'     => 'required|array', // Add skipper_ids validation
+        'skipper_ids.*'   => 'exists:skippers,id', // Ensure each skipper ID exists in the skippers table
+    ]);
 
-        $ship = new Ship($validatedData);
-        $ship->owner_id = auth()->id(); // Assuming the user is authenticated
-        $ship->save();
+    // Create a new Ship instance
+    $ship = new Ship($validatedData);
+    $ship->owner_id = auth()->id(); // Assuming the user is authenticated
+    $ship->save();
 
-        return $this->sendResponse($ship);
-
-        
+    // Attach the skippers if provided
+    if ($request->has('skipper_ids')) {
+        $ship->skippers()->attach($request->input('skipper_ids'));
     }
+
+    return $this->sendResponse($ship);
+}
+
 
     // Display the specified ship
     public function show($id)
