@@ -14,7 +14,6 @@ class ShipController extends BaseController
             'reviews.user',
             'owner',
             'reservations',
-            'geofences',
             'skippers',)->get();
 
         $ships->transform(function($ship) {

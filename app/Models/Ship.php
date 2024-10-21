@@ -43,10 +43,10 @@ class Ship extends Model
     }
 
     // A ship can have many geofences
-    public function geofences()
-    {
-        return $this->hasMany(Geofence::class);
-    }
+    // public function geofences()
+    // {
+    //     return $this->hasMany(Geofence::class);
+    // }
 
     // A ship can have multiple skippers (if applicable)
     public function skippers()
