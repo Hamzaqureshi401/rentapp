@@ -6,7 +6,6 @@ use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\ShipController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\SkipperController;
-// use App\Http\Controllers\GeofenceController;
 use App\Http\Controllers\ShipReviewController;
 
 
@@ -14,6 +13,7 @@ use App\Http\Controllers\ShipReviewController;
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
+Auth::routes();
 
 
 Route::middleware(['auth:api'])->group(function () {
@@ -34,8 +34,6 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('skippers', [SkipperController::class, 'store']); // POST request to create a skipper
     });
     Route::apiResource('ship-reviews', ShipReviewController::class);
-    // Geofence routes
-    Route::apiResource('geofences', GeofenceController::class);
     
 });
 

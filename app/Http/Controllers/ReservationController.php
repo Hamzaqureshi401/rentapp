@@ -16,6 +16,12 @@ class ReservationController extends BaseController
 
     }
 
+    public function edit(Reservation $reservation)
+    {
+        return view('reservations.edit', compact('reservation'));
+    }
+
+
     // Store a new reservation
     public function store(Request $request)
     {
@@ -42,18 +48,28 @@ class ReservationController extends BaseController
     }
 
     // Update a reservation (e.g., cancel it)
-    public function update(Request $request, $id)
-    {
-        $reservation = Reservation::where('user_id', auth()->id())->findOrFail($id);
+   public function update(Request $request, Reservation $reservation)
+{
+    // Ensure the reservation belongs to the logged-in user (optional check)
+    // If you need to add any user-specific checks, you can do so here.
 
-        $validatedData = $request->validate([
-            'status' => 'required|in:canceled',
-        ]);
+    $validatedData = $request->validate([
+        'status' => 'required|in:pending,confirmed,canceled', // Validation for enum values
+    ]);
 
-        $reservation->update($validatedData);
+    // Update the reservation
+    $reservation->update($validatedData);
 
+    // Check if the request expects a JSON response (API request) or is a web request
+    if ($request->expectsJson()) {
+        // Return a JSON response for API requests
         return $this->sendResponse($reservation);
+    } else {
+        // Redirect to the reservation list page for web requests
+        return redirect()->route('reservations.index')->with('success', 'Reservation updated successfully!');
     }
+}
+
 
     // Delete a reservation
     public function destroy($id)
